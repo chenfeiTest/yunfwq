@@ -29,7 +29,7 @@ $(eval $package)
 $(eval $mvyml)
 
 ./mvnw clean package -Dmaven.test.skip=true
-app_jar_name='storeservice-0.0.1-SNAPSHOT.jar'
+app_jar_name='chat-service-0.0.1-SNAPSHOT.jar'
 
 app_launch_command="nohup java -Duser.timezone=GMT+08 -Xmx64M -Xms64M -jar $current_dir/target/${app_jar_name} > $current_dir/server.out 2>&1 &"
 
