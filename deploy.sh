@@ -45,16 +45,13 @@ app_launch_command="nohup java -Duser.timezone=GMT+08 ${jvmargs} -jar $current_d
 
 start(){
     echo "starting ....."
-    if [ -n "$(get_pid)" ];then
-        echo "appliaton has been started"
-    else
-        $(eval $app_launch_command)
-    fi
+     $(eval $app_launch_command)
 }
 
 stop(){
     echo "stopping ....."
     pid=$(get_pid)
+    println_info $pid
     if [ -n "$pid" ];then
         kill -9 $pid
     else
@@ -68,26 +65,9 @@ restart(){
 }
 
 get_pid() {
-    ps -ef | grep ${app_jar_name} | grep -v grep | awk '{print $2}'
+#    lsof -i:${port} | grep -v grep | awk '{print $2}'
+    netstat -nlp | grep :${port} | awk '{print $7}' | awk -F"/" '{ print $1 }'
+#    ps -ef | grep ${app_jar_name} | grep -v grep | awk '{print $2}'
 }
-get_tail_pid() {
-    ps -ef | grep 'tail' | grep -v grep | awk '{print $2}'
-}
+
 restart
-#case "$1" in
-#  start)
-#    start
-#    ;;
-#  stop)
-#    stop
-#    ;;
-#  status)
-#    status -p "$mypidfile" $prog
-#    ;;
-#  restart)
-#    restart
-#    ;;
-#  *)
-#    echo $"Usage: $0 {start|stop|status|restart}"
-#    exit 2
-#esac
