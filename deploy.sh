@@ -10,10 +10,20 @@ if [ "$1" = "pro" ]; then
     properties_name=application-pro.properties
     log_name=logback-spring-pro.xml
     yml_name=application-pro.yml
+    port=9016
+    jvmargs="-Xmx512M -Xms512M"
 elif [ "$1" = "dev" ]; then
     properties_name=application-dev.properties
     log_name=logback-spring.xml
     yml_name=application.yml
+    port=9006
+    jvmargs="-Xmx256M -Xms256M"
+elif [ "$1" = "dev" ]; then
+    properties_name=application-dev.properties
+    log_name=logback-spring.xml
+    yml_name=application.yml
+    jvmargs="-Xmx256M -Xms256M"
+    port=9026
 else
    println_info "输入参数有误，仅支持[dev、pro]"
    exit
@@ -31,7 +41,7 @@ $(eval $mvyml)
 ./mvnw clean package -Dmaven.test.skip=true
 app_jar_name='chat-service-0.0.1-SNAPSHOT.jar'
 
-app_launch_command="nohup java -Duser.timezone=GMT+08 -Xmx512M -Xms64M -jar $current_dir/target/${app_jar_name} > $current_dir/server.out 2>&1 &"
+app_launch_command="nohup java -Duser.timezone=GMT+08 ${jvmargs} -jar $current_dir/target/${app_jar_name} > $current_dir/server.out 2>&1 &"
 
 start(){
     echo "starting ....."
