@@ -18,14 +18,14 @@ elif [ "$1" = "dev" ]; then
     yml_name=application.yml
     port=9006
     jvmargs="-Xmx256M -Xms256M"
-elif [ "$1" = "dev" ]; then
-    properties_name=application-dev.properties
+elif [ "$1" = "master" ]; then
+    properties_name=application-master.properties
     log_name=logback-spring.xml
     yml_name=application.yml
     jvmargs="-Xmx256M -Xms256M"
     port=9026
 else
-   println_info "输入参数有误，仅支持[dev、pro]"
+   println_info "输入参数有误，仅支持[dev、master、pro]"
    exit
 fi
 package1="mv src/main/resources/${log_name} src/main/resources/logback-spring.xml"
