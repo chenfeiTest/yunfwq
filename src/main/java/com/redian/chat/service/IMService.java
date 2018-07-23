@@ -56,11 +56,13 @@ public class IMService {
      * @param avatarUrl
      * @return
      */
-    public TIMResponse register(String identifier, String nickname, String avatarUrl) {
+    public Map<String, Object> register(String identifier, String nickname, String avatarUrl) {
         TIMRequest request = new TIMRequest("/v4/im_open_login_svc/account_import");
         request.put("Identifier", identifier);
         request.put("Nick", nickname);
         request.put("FaceUrl", avatarUrl);
-        return this.client.request(request);
+
+        TIMResponse response = this.client.request(request);
+        return response.getData();
     }
 }
