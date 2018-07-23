@@ -19,29 +19,17 @@ import java.io.IOException;
 public class ChatController {
 
     @Autowired
-    private MessageService messageService;
-
-    @Autowired
     private IMService imService;
-
-    @GetMapping(name = "消息列表")
-    @ApiResponse
-    public Object list(MessageQuery query) {
-        Page<Message> messagePage = messageService.findAllByQuery(query);
-        PageDTO<Message> pageDTO = new PageDTO<>(messagePage);
-        return pageDTO;
-    }
-
-    @PostMapping(name = "发送消息")
-    @ApiResponse
-    public Object send(@RequestBody MessageDTO dto) {
-        messageService.sendMessage(dto);
-        return null;
-    }
 
     @PostMapping(name = "用户签名", value = "sign")
     @ApiResponse
     public Object sign(@RequestParam String identifier) {
         return imService.sign(identifier);
+    }
+
+    @PostMapping(name = "用户注册", value = "register")
+    @ApiResponse
+    public Object register(@RequestParam String identifier, @RequestParam String username, @RequestParam String avatarUrl) {
+        return imService.register(identifier, username, avatarUrl);
     }
 }
