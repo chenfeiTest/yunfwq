@@ -112,7 +112,7 @@ public class PortalController {
             if (action.equals("Logout")) {
                 redisTemplate.opsForValue().set(key, "logout", 1, TimeUnit.SECONDS);
             } else {
-                redisTemplate.opsForValue().set(key, "login");
+                redisTemplate.opsForValue().set(key, "login", 10, TimeUnit.MINUTES);
             }
         }
         return null;
