@@ -4,6 +4,7 @@ import com.redian.chat.ApiResponse;
 import com.redian.chat.domain.IMCallbackParam;
 import com.redian.chat.domain.PushDTO;
 import com.redian.chat.service.WxPushInterface;
+import com.redian.errorcommon.DTO.Template;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,12 +54,14 @@ public class PortalController {
                 info.put("内容", "你收到一条聊天消息");
                 data.add(info);
 
-                logger.debug("微信推送:" + info);
                 PushDTO dto = new PushDTO();
                 dto.setTemplateId("TpozlnOzzxAhiuS-5T-eaRNOLXReZTeqIjLTa3LiHqE");
                 dto.setOpenids(openIds);
                 dto.setData(data);
-                wxPushInterface.push(dto);
+
+                logger.debug("微信推送请求:" + dto);
+                Template template = wxPushInterface.push(dto);
+                logger.debug("微信推送响应:" + template);
             }
         } else if (param.getCallbackCommand().equals("State.StateChange")) {//状态变更回调
             JSONObject info = json.getJSONObject("Info");
