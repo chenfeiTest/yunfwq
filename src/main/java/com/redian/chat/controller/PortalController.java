@@ -45,17 +45,17 @@ public class PortalController {
 
                 List<Map<String, String>> data = new ArrayList<>();
                 Map<String, String> info1 = new HashMap<>();
-                info1.put("name", "回复人");
+                info1.put("name", "keyword1");
                 info1.put("value", sender);
                 data.add(info1);
 
                 Map<String, String> info2 = new HashMap<>();
-                info2.put("name", "回复时间");
+                info2.put("name", "keyword2");
                 info2.put("value", new Date().toString());
                 data.add(info2);
 
                 Map<String, String> info3 = new HashMap<>();
-                info3.put("name", "回复内容");
+                info3.put("name", "keyword3");
                 info3.put("value", "你收到一条聊天消息，点出查看详情");
                 data.add(info3);
 
@@ -63,6 +63,8 @@ public class PortalController {
                 dto.setTemplateId("TpozlnOzzxAhiuS-5T-eaRNOLXReZTeqIjLTa3LiHqE");
                 dto.setOpenids(openIds);
                 dto.setPage("pages/user/userIndex?redirect=conversation-list");
+                dto.setType(5);
+                dto.setPlatform(2);
                 dto.setData(data);
 
                 logger.debug("微信推送请求:" + new JSONObject(dto));
