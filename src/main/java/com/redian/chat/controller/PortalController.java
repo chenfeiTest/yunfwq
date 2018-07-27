@@ -5,6 +5,8 @@ import com.redian.chat.domain.IMCallbackParam;
 import com.redian.chat.domain.PushDTO;
 import com.redian.chat.service.WxPushInterface;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,8 @@ import java.util.Map;
 @RequestMapping(value = "portal")
 public class PortalController {
 
+    private static Logger logger = LoggerFactory.getLogger(PortalController.class);
+
     @Autowired
     RedisTemplate<String, String> redisTemplate;
 
@@ -27,8 +31,11 @@ public class PortalController {
     @PostMapping(name = "IM回调")
     @ApiResponse
     public Object portal(@RequestBody Map body, IMCallbackParam param) {
+        logger.debug("IM回调:" + param.getCallbackCommand());
+
         if (param.getCallbackCommand().equals("C2C.CallbackAfterSendMsg")) {//发单聊消息之后回调
             JSONObject json = new JSONObject(body);
+            logger.debug("发单聊消息之后回调:" + json.toString());
             String sender = json.getString("From_Account");
             String receiver = json.getString("To_Account");
 
@@ -54,6 +61,7 @@ public class PortalController {
             }
         } else if (param.getCallbackCommand().equals("State.StateChange")) {//状态变更回调
             JSONObject json = new JSONObject(body);
+            logger.debug("发单聊消息之后回调:" + json.toString());
             JSONObject info = json.getJSONObject("Info");
             String action = info.getString("Action");
             String user = info.getString("To_Account");
