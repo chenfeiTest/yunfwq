@@ -57,8 +57,8 @@ public class PortalController {
                 if (templateB.getCode() != 200) {
                     return null;
                 }
-
-                JSONObject tempInfo = new JSONObject(templateB.getData());
+                logger.debug("用户及店铺信息:" + templateB.getData());
+                JSONObject tempInfo = new JSONObject((Map<?, ?>) templateB.getData());
                 logger.debug("用户及店铺信息:" + tempInfo);
 
                 JSONObject userInfo = tempInfo.getJSONObject("user");
