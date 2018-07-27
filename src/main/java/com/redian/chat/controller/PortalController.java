@@ -41,7 +41,7 @@ public class PortalController {
 
             String key = "im_callback_status_" + receiver;
             String status = redisTemplate.opsForValue().get(key);
-            if (status.equals("logout")) {
+            if (status !=null && status.equals("logout")) {
                 List<String> openIds = new ArrayList<>();
                 openIds.add(receiver);
 
