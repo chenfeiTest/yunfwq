@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -45,22 +46,12 @@ public class PortalController {
             String key = "im_callback_status_" + receiver;
             String status = redisTemplate.opsForValue().get(key);
             if (status == null || status.equals("logout")) {
-
-                Template templateC = userInterface.getCUser(receiver);
-                logger.debug("C用户信息:" + templateC.getCode());
-                if (templateC.getCode() != 200) {
-                    return null;
-                }
-
                 Template templateB = userInterface.getShop(sender);
-                logger.debug("B用户信息:" + + templateB.getCode());
                 if (templateB.getCode() != 200) {
                     return null;
                 }
-                logger.debug("用户及店铺信息:" + templateB.getData());
-                JSONObject tempInfo = new JSONObject((Map<?, ?>) templateB.getData());
-                logger.debug("用户及店铺信息:" + tempInfo);
 
+                JSONObject tempInfo = new JSONObject((Map<?, ?>) templateB.getData());
                 JSONObject userInfo = tempInfo.getJSONObject("user");
                 JSONObject shopInfo = tempInfo.getJSONArray("shops").getJSONObject(0);
                 String title = userInfo.getString("nickName") + "(" + shopInfo.getString("name") + ")";
@@ -79,9 +70,12 @@ public class PortalController {
                 info2.put("value", "聊天消息");
                 data.add(info2);
 
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                String dateString = format.format(new Date());
+
                 Map<String, String> info3 = new HashMap<>();
                 info3.put("name", "keyword3");
-                info3.put("value", new Date().toString());
+                info3.put("value", dateString);
                 data.add(info3);
 
                 Map<String, String> info4 = new HashMap<>();
