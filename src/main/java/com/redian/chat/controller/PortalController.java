@@ -75,7 +75,7 @@ public class PortalController {
 
                 Map<String, String> info2 = new HashMap<>();
                 info2.put("name", "keyword2");
-                info2.put("value", "聊天消息");
+                info2.put("value", "会话消息");
                 data.add(info2);
 
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -88,7 +88,7 @@ public class PortalController {
 
                 Map<String, String> info4 = new HashMap<>();
                 info4.put("name", "keyword4");
-                info4.put("value", "你收到一条聊天消息，点出查看详情");
+                info4.put("value", "点出查看详情");
                 data.add(info4);
 
                 PushDTO dto = new PushDTO();
