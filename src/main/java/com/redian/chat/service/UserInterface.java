@@ -4,7 +4,6 @@ import com.redian.errorcommon.DTO.Template;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @FeignClient("user-service")
 public interface UserInterface {
@@ -15,6 +14,6 @@ public interface UserInterface {
     @GetMapping(value = "/busers/{openid}")
     Template getBUser(@PathVariable String openid);
 
-    @GetMapping(value = "/user/{openid}")
+    @GetMapping(value = "/shop/user/{openid}")
     Template getShop(@PathVariable String openid);
 }
