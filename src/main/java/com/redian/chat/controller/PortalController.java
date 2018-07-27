@@ -47,11 +47,13 @@ public class PortalController {
             if (status == null || status.equals("logout")) {
 
                 Template templateC = userInterface.getCUser(receiver);
+                logger.debug("C用户信息:" + templateC.getCode());
                 if (templateC.getCode() != 200) {
                     return null;
                 }
 
                 Template templateB = userInterface.getShop(sender);
+                logger.debug("B用户信息:" + + templateB.getCode());
                 if (templateB.getCode() != 200) {
                     return null;
                 }
