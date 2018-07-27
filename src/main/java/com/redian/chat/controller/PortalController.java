@@ -53,12 +53,12 @@ public class PortalController {
                     return null;
                 }
 
-                Map data = (Map<?, ?>) templateB.getData();
-                if (data.size() == 0) {
+                Map dataMap = (Map<?, ?>) templateB.getData();
+                if (dataMap.size() == 0) {
                     return null;
                 }
 
-                JSONObject tempInfo = new JSONObject(data);
+                JSONObject tempInfo = new JSONObject(dataMap);
                 logger.debug("获取店铺信息:" + tempInfo);
                 JSONObject userInfo = tempInfo.getJSONObject("user");
                 JSONObject shopInfo = tempInfo.getJSONArray("shops").getJSONObject(0);
