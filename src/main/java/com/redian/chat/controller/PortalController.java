@@ -67,7 +67,7 @@ public class PortalController {
 
             String key = "im_callback_status_" + user;
             if (action.equals("Logout")) {
-                redisTemplate.opsForValue().set(key, "logout", 0, TimeUnit.SECONDS);
+                redisTemplate.opsForValue().set(key, "logout", 1, TimeUnit.SECONDS);
             } else {
                 redisTemplate.opsForValue().set(key, "login", 10, TimeUnit.MINUTES);
             }
