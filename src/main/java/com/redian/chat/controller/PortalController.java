@@ -28,10 +28,11 @@ public class PortalController {
     @Autowired
     WxPushInterface wxPushInterface;
 
-    @PostMapping(name = "IM回调", produces = "application/json")
+    @PostMapping(name = "IM回调")
     @ApiResponse
-    public Object portal(@RequestBody Map body, IMCallbackParam param) {
+    public Object portal(@RequestBody String body, IMCallbackParam param) {
         logger.debug("IM回调:" + param.getCallbackCommand());
+        logger.debug("IM回调:" + body);
 
         if (param.getCallbackCommand().equals("C2C.CallbackAfterSendMsg")) {//发单聊消息之后回调
             JSONObject json = new JSONObject(body);
@@ -73,14 +74,6 @@ public class PortalController {
                 redisTemplate.opsForValue().set(key, "login");
             }
         }
-        return null;
-    }
-
-
-    @PostMapping(name = "IM回调", produces = "application/octet-stream")
-    @ApiResponse
-    public Object portal2(@RequestBody Map body, IMCallbackParam param) {
-        logger.debug("IM回调222222:" + param.getCallbackCommand());
         return null;
     }
 }
