@@ -45,6 +45,7 @@ public class PortalController {
 
             String key = "im_callback_status_" + receiver;
             String status = redisTemplate.opsForValue().get(key);
+            logger.debug("用户在线状态:" + status);
             if (status == null || status.equals("logout")) {
                 Template templateB = userInterface.getShop(sender);
                 logger.debug("获取店铺信息:" + templateB.getCode() + " " + templateB.getMsg() + " " + templateB.getData());
