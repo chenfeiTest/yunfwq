@@ -107,7 +107,7 @@ public class TIMClient {
         }
 
         JSONObject jsonObject = new JSONObject(responseEntity.getBody());
-        TIMResponse response = new TIMResponse(jsonObject);
-        return  response;
+        TIMResponse response = new TIMResponse(jsonObject.toMap());
+        return response;
     }
 }

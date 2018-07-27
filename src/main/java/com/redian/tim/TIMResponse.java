@@ -1,27 +1,38 @@
 package com.redian.tim;
 
-import org.json.JSONObject;
-
 import java.io.Serializable;
+import java.util.Map;
 
 public class TIMResponse implements Serializable {
     private String status;
     private String message;
     private Integer code;
-    private JSONObject data;
+    private Map<String, Object> data;
 
-    public TIMResponse(JSONObject ret) {
-        this.data = ret;
-        this.status = this.data.getString("ActionStatus");
-        this.message = this.data.getString("ErrorInfo");
-        this.code = this.data.getInt("ErrorCode");
+    public TIMResponse(Map<String, Object> data) {
+        this.data = data;
+        this.status = (String) this.data.get("ActionStatus");
+        this.message = (String) this.data.get("ErrorInfo");
+        this.code = (Integer) this.data.get("ErrorCode");
 
         this.data.remove("ActionStatus");
         this.data.remove("ErrorInfo");
         this.data.remove("ErrorCode");
     }
 
-    public Object get(String key) {
-        return this.data.get(key);
+    public String getStatus() {
+        return status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public Map<String, Object> getData() {
+        return data;
     }
 }
