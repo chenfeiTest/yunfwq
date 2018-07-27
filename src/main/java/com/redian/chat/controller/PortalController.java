@@ -49,11 +49,16 @@ public class PortalController {
             if (status == null || status.equals("logout")) {
                 Template templateB = userInterface.getShop(sender);
                 logger.debug("获取店铺信息:" + templateB.getCode() + " " + templateB.getMsg() + " " + templateB.getData());
-                if (templateB.getCode() != 200) {
+                if (templateB.getCode() != 200 || templateB.getData() == null) {
                     return null;
                 }
 
-                JSONObject tempInfo = new JSONObject((Map<?, ?>) templateB.getData());
+                Map data = (Map<?, ?>) templateB.getData();
+                if (data.size() == 0) {
+                    return null;
+                }
+
+                JSONObject tempInfo = new JSONObject(data);
                 logger.debug("获取店铺信息:" + tempInfo);
                 JSONObject userInfo = tempInfo.getJSONObject("user");
                 JSONObject shopInfo = tempInfo.getJSONArray("shops").getJSONObject(0);
