@@ -1,28 +1,18 @@
 package com.redian.chat.service;
 
-import com.redian.chat.exception.BusinessException;
 import com.redian.tim.TIMClient;
 import com.redian.tim.TIMRequest;
 import com.redian.tim.TIMResponse;
 import com.tls.tls_sigature.tls_sigature;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import springfox.documentation.spring.web.json.Json;
 
 import java.util.*;
-import java.util.zip.DataFormatException;
 
 @Service
-public class IMService {
-    private static Logger logger = LoggerFactory.getLogger(IMService.class);
+public class ChatService {
+    private static Logger logger = LoggerFactory.getLogger(ChatService.class);
     private static final String privateKey = "-----BEGIN PRIVATE KEY-----\n" +
             "MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgaPViaHMC9Rc+UQiy\n" +
             "cv9caWBB0Y2IsPLmj+vFgei48wihRANCAARNqxWFjFmh+OwyhOXfyOSWBU8zaXbz\n" +
@@ -37,7 +27,7 @@ public class IMService {
     private TIMClient client;
 
 
-    public IMService() {
+    public ChatService() {
         this.client = new  TIMClient(skdAppid, identifier, privateKey, publicKey);
     }
 
