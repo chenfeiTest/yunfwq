@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping(value = "portal")
@@ -23,7 +24,7 @@ public class PortalController {
     private static Logger logger = LoggerFactory.getLogger(PortalController.class);
 
     @Autowired
-    RedisTemplate<String, String> redisTemplate;
+    RedisTemplate<String, Boolean> redisTemplate;
 
     @Autowired
     WxPushInterface wxPushInterface;
@@ -31,18 +32,16 @@ public class PortalController {
     @PostMapping(name = "IM回调")
     @ApiResponse
     public Object portal(@RequestBody String body, IMCallbackParam param) {
-        logger.debug("IM回调:" + param.getCallbackCommand());
-        logger.debug("IM回调:" + body);
+        JSONObject json = new JSONObject(body);
+        logger.debug("IM回调:" + json);
 
         if (param.getCallbackCommand().equals("C2C.CallbackAfterSendMsg")) {//发单聊消息之后回调
-            JSONObject json = new JSONObject(body);
-            logger.debug("发单聊消息之后回调:" + json.toString());
             String sender = json.getString("From_Account");
             String receiver = json.getString("To_Account");
 
             String key = "im_callback_status_" + receiver;
-            String status = redisTemplate.opsForValue().get(key);
-            if (status !=null && status.equals("logout")) {
+            Boolean isLogin = redisTemplate.opsForValue().get(key);
+            if (isLogin == null || !isLogin) {
                 List<String> openIds = new ArrayList<>();
                 openIds.add(receiver);
 
@@ -54,6 +53,7 @@ public class PortalController {
                 info.put("内容", "你收到一条聊天消息");
                 data.add(info);
 
+                logger.debug("微信推送:" + info);
                 PushDTO dto = new PushDTO();
                 dto.setTemplateId("TpozlnOzzxAhiuS-5T-eaRNOLXReZTeqIjLTa3LiHqE");
                 dto.setOpenids(openIds);
@@ -61,17 +61,15 @@ public class PortalController {
                 wxPushInterface.push(dto);
             }
         } else if (param.getCallbackCommand().equals("State.StateChange")) {//状态变更回调
-            JSONObject json = new JSONObject(body);
-            logger.debug("发单聊消息之后回调:" + json.toString());
             JSONObject info = json.getJSONObject("Info");
             String action = info.getString("Action");
             String user = info.getString("To_Account");
 
             String key = "im_callback_status_" + user;
             if (action.equals("Logout")) {
-                redisTemplate.opsForValue().set(key, "logout");
+                redisTemplate.opsForValue().set(key, false, 0, TimeUnit.SECONDS);
             } else {
-                redisTemplate.opsForValue().set(key, "login");
+                redisTemplate.opsForValue().set(key, true, 10, TimeUnit.MINUTES);
             }
         }
         return null;
