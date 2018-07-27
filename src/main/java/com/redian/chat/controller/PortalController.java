@@ -24,7 +24,7 @@ public class PortalController {
     private static Logger logger = LoggerFactory.getLogger(PortalController.class);
 
     @Autowired
-    RedisTemplate<String, Boolean> redisTemplate;
+    RedisTemplate<String, String> redisTemplate;
 
     @Autowired
     WxPushInterface wxPushInterface;
@@ -40,8 +40,8 @@ public class PortalController {
             String receiver = json.getString("To_Account");
 
             String key = "im_callback_status_" + receiver;
-            Boolean isLogin = redisTemplate.opsForValue().get(key);
-            if (isLogin == null || !isLogin) {
+            String status = redisTemplate.opsForValue().get(key);
+            if (status == null || status.equals("logout")) {
                 List<String> openIds = new ArrayList<>();
                 openIds.add(receiver);
 
@@ -67,9 +67,9 @@ public class PortalController {
 
             String key = "im_callback_status_" + user;
             if (action.equals("Logout")) {
-                redisTemplate.opsForValue().set(key, false, 0, TimeUnit.SECONDS);
+                redisTemplate.opsForValue().set(key, "logout", 0, TimeUnit.SECONDS);
             } else {
-                redisTemplate.opsForValue().set(key, true, 10, TimeUnit.MINUTES);
+                redisTemplate.opsForValue().set(key, "login", 10, TimeUnit.MINUTES);
             }
         }
         return null;
