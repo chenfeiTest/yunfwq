@@ -59,7 +59,6 @@ public class PortalController {
                 }
 
                 JSONObject tempInfo = new JSONObject(dataMap);
-                logger.debug("获取店铺信息:" + tempInfo);
                 JSONObject userInfo = tempInfo.getJSONObject("user");
                 JSONObject shopInfo = tempInfo.getJSONArray("shops").getJSONObject(0);
                 String title = userInfo.getString("nickName") + "(" + shopInfo.getString("name") + ")";
@@ -99,7 +98,6 @@ public class PortalController {
                 dto.setPlatform(2);
                 dto.setData(data);
 
-                logger.debug("微信推送请求:" + new JSONObject(dto));
                 Template template = pushInterface.push(dto);
                 logger.debug("微信推送响应:" + template.getCode() + "  " + template.getMsg() + " " + template.getData());
             }
