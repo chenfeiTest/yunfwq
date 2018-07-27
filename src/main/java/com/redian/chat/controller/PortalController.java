@@ -57,11 +57,12 @@ public class PortalController {
                 PushDTO dto = new PushDTO();
                 dto.setTemplateId("TpozlnOzzxAhiuS-5T-eaRNOLXReZTeqIjLTa3LiHqE");
                 dto.setOpenids(openIds);
+                dto.setPage("pages/user/userIndex?redirect=conversation-list");
                 dto.setData(data);
 
-                logger.debug("微信推送请求:" + dto);
+                logger.debug("微信推送请求:" + new JSONObject(dto));
                 Template template = wxPushInterface.push(dto);
-                logger.debug("微信推送响应:" + template);
+                logger.debug("微信推送响应:" + template.getCode() + "  " + template.getMsg() + " " + template.getData());
             }
         } else if (param.getCallbackCommand().equals("State.StateChange")) {//状态变更回调
             JSONObject info = json.getJSONObject("Info");
@@ -72,7 +73,7 @@ public class PortalController {
             if (action.equals("Logout")) {
                 redisTemplate.opsForValue().set(key, "logout", 1, TimeUnit.SECONDS);
             } else {
-                redisTemplate.opsForValue().set(key, "login", 10, TimeUnit.MINUTES);
+                redisTemplate.opsForValue().set(key, "login");
             }
         }
         return null;
