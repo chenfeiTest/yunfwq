@@ -47,11 +47,13 @@ public class PortalController {
             String status = redisTemplate.opsForValue().get(key);
             if (status == null || status.equals("logout")) {
                 Template templateB = userInterface.getShop(sender);
+                logger.debug("获取店铺信息:" + templateB.getCode() + " " + templateB.getMsg() + " " + templateB.getData());
                 if (templateB.getCode() != 200) {
                     return null;
                 }
 
                 JSONObject tempInfo = new JSONObject((Map<?, ?>) templateB.getData());
+                logger.debug("获取店铺信息:" + tempInfo);
                 JSONObject userInfo = tempInfo.getJSONObject("user");
                 JSONObject shopInfo = tempInfo.getJSONArray("shops").getJSONObject(0);
                 String title = userInfo.getString("nickName") + "(" + shopInfo.getString("name") + ")";
