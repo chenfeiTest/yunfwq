@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient("base-service")
-public interface WxPushInterface {
+public interface PushInterface {
 
     @PostMapping(value = "/wechat/push/")
     Template push(@RequestBody PushDTO pushDTO);
