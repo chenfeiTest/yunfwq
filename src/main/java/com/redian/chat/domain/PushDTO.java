@@ -1,12 +1,13 @@
 package com.redian.chat.domain;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by york on 2018/6/28.
  */
-public class PushDTO {
+public class PushDTO implements Serializable {
 
     private String templateId;
 
